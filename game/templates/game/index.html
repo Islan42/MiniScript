@@ -30,7 +30,15 @@
 				</span>
 				<button id = "startBtn">START</button>
 			</p>
-			<div id = "game-panel"></div>
+			<div id="game-panel"></div>
+			
+			<div id="scoreboard"></div>
+			<script type="module">
+				import { createApp } from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js'
+				import ScoreBoard from '../../static/game/vue/scoreboard.js'
+				
+				createApp(ScoreBoard).mount('#scoreboard')
+			</script>
 		</main>
 		<footer>
       <h2>CONTATOS IMEDIATOS</h2>
