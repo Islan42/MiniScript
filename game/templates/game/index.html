@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8"/>
+    <title>MiniCode</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1" />
+		{% load static %}
+		<link rel = "icon" href = "{% static 'game/assets/favicon.png' %}" />
+		<link rel = "stylesheet" href = "{% static 'game/styles.css' %}" >
+		<script type = "module" src = "{% static 'game/main.js' %}" ></script>
+  </head>
+  <body>
+		<header>
+			<h1>MiniCode</h1>
+		</header>
+		<main>
+			<p>V 0.85</p>
+			<p>Olá, Mundo! Isto é MiniCode, um minigame de apertar botão inspirando em um minigame de GTA SA.</p>
+			<p>Você pode conferir <a href = "https://github.com/Islan42/minicode">MiniCode no GitHub</a> </p>
+			<h2>Instruções</h2>
+			<p>Seu objetivo é programar um website com muita RAPIDEZ e FORÇA DE VONTADE. Aperte "SPACEBAR" para escrever linhas de código e alcançar uma pontuação alta. Conserte bugs que aparecerem durante o processo.</p>
+			<p>Modo de jogo: 
+				<span>
+					<input type = "radio" id = "desktop" name = "mode" value = "desktop" checked />
+          <label for = "desktop">Desktop</label>
+				</span>
+				<span>
+					<input type = "radio" id = "mobile" name = "mode" value = "mobile" />
+          <label for = "mobile">Mobile</label>
+				</span>
+				<button id = "startBtn">START</button>
+			</p>
+			<div id = "game-panel"></div>
+		</main>
+		<footer>
+      <h2>CONTATOS IMEDIATOS</h2>
+      <ul>
+        <li><a href = "https://github.com/Islan42" target = "_blank" >GIT-HUB</a></li>
+        <li><a href = "https://www.linkedin.com/in/islan-v-426b17133/" target = "_blank" >LINKEDIN</a></li>
+      </ul>
+    </footer>
+  </body>
+</html>
