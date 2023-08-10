@@ -1,8 +1,15 @@
 export default {
   data() {
     return {
-      count: 5
+      scoreArray: [{id: 0, score: 2200, nickname: 'LocoAbreu', platform: 'Mobile'}, ],
     }
   },
-  template: `<div>Count is {{ count }}</div>`,
+  emit: ['teste'],
+  template: 
+  `
+    <p>High Scores</p>
+    <ol>
+      <li v-for="score in scoreArray">{{ score.score }} - {{ score.nickname }} - {{ score.platform }}</li>
+    </ol>
+  `
 }
