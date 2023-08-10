@@ -1,4 +1,5 @@
 import { animate, canvasAux, inputGame, gameControl, lvlControl, bugsTimeControl, timeControl, } from "./utils.js"
+import ScoreBoard from "./scoreboard.js"
 
 export default class MiniScript {
   root;
@@ -90,6 +91,7 @@ export default class MiniScript {
     bugs.src = "/static/game/assets/bugs.png"
     this.assets = { lorem, desk, key, spacebar, penalties, bugs };
     
+    console.log(ScoreBoard.render())
     this.gameStart()
     this.main()
   }

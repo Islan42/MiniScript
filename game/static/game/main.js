@@ -1,4 +1,5 @@
 import MiniScript from "./modules/miniscript.js"
+import ScoreBoard from "./modules/scoreboard.js"
 
 const panel = document.getElementById("game-panel")
 const button = document.getElementById("startBtn")
@@ -15,3 +16,5 @@ button.addEventListener("click", () => {
   }
   minigame = new MiniScript(panel, desktop.checked)
 })
+
+console.log(ScoreBoard.render())
