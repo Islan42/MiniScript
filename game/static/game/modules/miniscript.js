@@ -91,7 +91,7 @@ export default class MiniScript {
     bugs.src = "/static/game/assets/bugs.png"
     this.assets = { lorem, desk, key, spacebar, penalties, bugs };
     
-    console.log(ScoreBoard.render())
+    // console.log(ScoreBoard.render()) APAGAR
     this.gameStart()
     this.main()
   }
