@@ -94,7 +94,18 @@ export default {
         reject(`Error ${request.status}: ${request.statusText}`)
       })
       
-      const URL = platform ? `/score/${platform}/` : '/score/'
+      let URL = '/score/'
+      switch(platform){
+        case 'ML':
+        case 'mobile':
+          URL += 'mobile/'
+          break
+        case 'DT':
+        case 'desktop':
+          URL += 'desktop/'
+        default:
+          break
+      }
       request.open('GET', URL)
       request.send()      
     })
@@ -130,7 +141,7 @@ export default {
     // console.log(this.highScoreDesktop) //DEBUG
     
     this.generateHTML(array)
-    this.addEventListener()
+    this.createEventHandlers()
 
   },
   
@@ -139,11 +150,20 @@ export default {
   },
   
   async submitScore(score){
-    const scoreJson = JSON.stringify(score)
-    const result = this.postRequestCreateScore(scoreJson)
-    
-    
-    
+    if(score.Score && score.Nickname && score.Platform){
+      const scoreJson = JSON.stringify(score)
+      const published = this.postRequestCreateScore(scoreJson)
+      
+      score.Date = new Date
+      score.Published = published
+      
+      if(score.Platform === 'ML'){
+        this.setLSHighScoreMobile(score)
+      } else {
+        this.setLSHighScoreDesktop(score)
+      }
+      this.rerender(score.Platform)
+    }
   },
   
   generateHTML(array){
@@ -223,7 +243,7 @@ export default {
       return button
     }
   },
-  addEventListener(){
+  createEventHandlers(){
     return
   },
 }
