@@ -1,6 +1,11 @@
 export default {
   highScore: 0,
   scoresArray: [],
+  div: '',
+  
+  setDiv(div){
+    this.div = div
+  },
   
   getHighScore(){},
   setHighScore(){},
@@ -24,7 +29,7 @@ export default {
         reject(`Error ${request.status}: ${request.statusText}`)
       })
       
-      const URL = platform? `/score/${platform}/` : '/score/'
+      const URL = platform ? `/score/${platform}/` : '/score/'
       request.open('GET', URL)
       request.send()      
     })
@@ -34,9 +39,9 @@ export default {
     return ''
   },
   
-  render(div){
-    const array = this.getScoresArray()
-    array.then((result) => console.log(result))
+  async render(){
+    const array = await this.getScoresArray()
+    console.log(array)
   },
   rerender(){
     this.render()

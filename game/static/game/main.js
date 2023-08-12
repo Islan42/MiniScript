@@ -18,8 +18,9 @@ button.addEventListener("click", () => {
   minigame = new MiniScript(panel, desktop.checked)
 })
 
-ScoreBoard.render(scoreBoardPanel)
-ScoreBoard.rerender(scoreBoardPanel)
+ScoreBoard.render(scoreBoardPanel).then(() => console.log('TESTE2'))
+console.log('TESTE')
+// ScoreBoard.rerender(scoreBoardPanel)
 // ScoreBoard.getScoresArray('desktop')
   // .then((array) => console.log(array))
   // .catch((error) => console.log(error))
