@@ -1,5 +1,6 @@
 from django.shortcuts import render
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, HttpResponseNotFound, Http404
+import json
 
 from .models import Record
 # Create your views here.
@@ -32,7 +33,17 @@ from django.views.decorators.csrf import csrf_exempt
 # @csrf_exempt
 def scoreCreate(request):
     if request.method == 'POST':
-        return HttpResponse('Created')
+        score = json.loads(request.body)
+        
+        try:
+            scoreCreatePersist(score)
+        except:
+            raise Http404("Error when creating Record")
+        
+        response = json.dumps(score)
+        return HttpResponse(response)
+    else:
+        return HttpResponseNotFound("Not found")
 
 
 #UTILS
@@ -49,3 +60,10 @@ def generateTopScores(query_set):
             }
         )
     return topScores
+
+def scoreCreatePersist(score):
+    nickname = score['Nickname']
+    pts = score['Score']
+    platform = score['Platform']
+    
+    Record.objects.create(nickname = nickname, score = pts, platform = platform)

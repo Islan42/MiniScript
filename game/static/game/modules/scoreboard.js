@@ -3,13 +3,21 @@ export default {
   highScoreDesktop: {},
   scoresArray: [],
   div: '',
+  csrftoken: '',
   
   init(div){
     this.setDiv(div)
-    this.highScoreMobile = { Nickname: 'ABC', Score: 0, Platform: 'ML', Date: new Date, Published: false }
-    this.highScoreDesktop = { Nickname: 'ABC', Score: 0, Platform: 'DT', Date: new Date, Published: false }
+    this.highScoreMobile = { Nickname: 'ABC', Score: 0, Platform: 'ML', Date: new Date, Published: true }
+    this.highScoreDesktop = { Nickname: 'ABC', Score: 0, Platform: 'DT', Date: new Date, Published: true }
     this.getLSHighScoreMobile()
     this.getLSHighScoreDesktop()
+    this.setCSRFToken()
+    // console.log(this.csrftoken) //DEBUG
+    // const json = JSON.stringify({Nickname: 'ABCDE', Score: 1, Platform: 'ML', Date: new Date, Published: true})
+    // const json = JSON.stringify({a: 5})
+    // this.setScoreDatabase(json)
+      // .then((res) => console.log(res))
+      // .catch((error) => console.log(error))
     this.render()
     console.log('Successfully initialized')
   },
@@ -46,6 +54,26 @@ export default {
     
     window.localStorage.setItem('ms_hs_desktop', highScore)
   },
+  setCSRFToken(){
+    this.csrftoken = getCookie('csrftoken');
+    
+    function getCookie(name) {
+      let cookieValue = null;
+      
+      if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          // Does this cookie string begin with the name we want?
+          if (cookie.substring(0, name.length + 1) === (name + '=')) {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
+  },
   
   getScoresArray(platform = ''){
     return new Promise((resolve, reject) => {
@@ -72,15 +100,35 @@ export default {
     })
   },
   
-  setScore(score){
-    return ''
+  setScoreDatabase(score){
+    return new Promise ((resolve, reject) =>{
+      const request = new XMLHttpRequest()
+      
+      request.addEventListener('load', () => {
+        const requestType = Math.floor(request.status/100)
+        
+        if(requestType === 4 || requestType === 5){
+          return reject(`Error ${request.status}: ${request.statusText}`)
+        }
+        
+        resolve(request.response)
+      })
+      request.addEventListener('error', () => {
+        reject(`Error ${request.status}: ${request.statusText}`)
+      })
+      
+      // const URL = platform ? `/score/${platform}/` : '/score/'
+      request.open('POST', '/score/create/')
+      request.setRequestHeader('X-CSRFToken', this.csrftoken)
+      request.send(score) 
+    })
   },
   
   async render(platform = ''){
     const array = await this.getScoresArray(platform)
-    console.log(array)
-    console.log(this.highScoreMobile)
-    console.log(this.highScoreDesktop)
+    // console.log(array) //DEBUG
+    // console.log(this.highScoreMobile)  //DEBUG
+    // console.log(this.highScoreDesktop) //DEBUG
     
     this.generateHTML(array)
     this.addEventListener()
@@ -92,9 +140,9 @@ export default {
   
   generateHTML(array){
     let html
-    const desktopHSClass = this.highScoreDesktop.Published ? 'published' : 'unpublished'
+    const desktopHSClass = !this.highScoreDesktop.Published ? 'published' : 'unpublished' //REMOVER EXCLAMAÇÃO AIAIAIAIAIAI
     const mobileHSClass = this.highScoreMobile.Published ? 'published' : 'unpublished'
-    console.log(mobileHSClass === 'unpublished')
+    // console.log(mobileHSClass === 'unpublished') //DEBUG
     
     html = 
     `<table>
@@ -115,7 +163,7 @@ export default {
           </td>
         </tr>          
         <tr>
-          <td colspan="4" id="mobile-hs">
+          <td colspan="4" id="mobile-hs" class="${mobileHSClass}">
             Your highest score: ${this.highScoreMobile.Score} - Mobile
             ${addSubmitButton(mobileHSClass === 'unpublished')}
           </td>

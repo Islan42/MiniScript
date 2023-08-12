@@ -31,6 +31,13 @@
   background-color: rgb(245,245,245);
 }
 
+#scoreboard thead td.published {
+  background-color: #e0f7e2;
+}
+#scoreboard thead td.unpublished {
+  background-color: #fde0de;
+}
+
 /* caption { */
   /* padding: 10px; */
 /* } */
