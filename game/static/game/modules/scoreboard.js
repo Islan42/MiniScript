@@ -1,59 +1,61 @@
 export default {
-  highScoreMobile: {},
-  highScoreDesktop: {},
+  highScoreMobile: 'teste1',
+  highScoreDesktop: 'teste2',
   scoresArray: [],
   div: '',
   csrftoken: '',
   
   init(div){
-    window.localStorage.removeItem('ms_hs_mobile')  //DEBUG
-    window.localStorage.removeItem('ms_hs_desktop') //DEBUG
+    // window.localStorage.removeItem('ms_hs_mobile')  //DEBUG
+    // window.localStorage.removeItem('ms_hs_desktop') //DEBUG
     this.setDiv(div)
-    this.highScoreMobile = { Nickname: 'ABC', Score: 0, Platform: 'ML', Date: new Date, Published: true }
-    this.highScoreDesktop = { Nickname: 'ABC', Score: 0, Platform: 'DT', Date: new Date, Published: true }
-    this.getLSHighScoreMobile()
-    this.getLSHighScoreDesktop()
+    this.getLocalStorage('ML')
+    this.getLocalStorage('DT')
     this.setCSRFToken()
-    // console.log(this.csrftoken) //DEBUG
-    // const json = JSON.stringify({Nickname: 'ABCDE', Score: 1, Platform: 'ML', Date: new Date, Published: true})
-    // const json = JSON.stringify({a: 5})
-    // this.postRequestCreateScore(json)
-      // .then((res) => console.log(res))
-      // .catch((error) => console.log(error))
-    this.render()
-    console.log('Successfully initialized')
+    this.render('desktop')
+    // this.submitScore({ Nickname: 'ABC', Score: 2, Platform: 'ML', Date: new Date, Published: true }) //DEBUG
+    console.log('Successfully initialized') //DEBUG
   },
   
   setDiv(div){
     this.div = div
   },
   
-  getLSHighScoreMobile(){
-    const highScore = JSON.parse(window.localStorage.getItem('ms_hs_mobile'))
+  getLocalStorage(platform){
+    let URL
+    let attr
+    switch(platform){
+      case 'ML':
+      case 'mobile':
+        URL = 'ms_hs_mobile'
+        attr = 'highScoreMobile'
+        break
+      case 'DT':
+      case 'desktop':
+        URL = 'ms_hs_desktop'
+        attr = 'highScoreDesktop'
+        break
+      default:
+        throw new Error('platform argument not specified')
+    }
     
-    if(highScore !== null){
-      this.highScoreMobile = highScore
+    // console.log('Oi') //DEBUG
+    
+    const score = JSON.parse(window.localStorage.getItem(URL))
+    if(score && score.Score && score.Nickname && score.Platform && score.Published){
+      this[attr] = score
     } else {
-      const score = JSON.stringify(this.highScoreMobile)
-      this.setLSHighScoreMobile(score)
+      const abcPl = URL === 'ms_hs_mobile' ? 'ML' : 'DT'
+      const abc = { Nickname: 'ABC', Score: -1, Platform: abcPl, Date: new Date, Published: true }
+      this.setLocalStorage(URL, abc)
+      this.getLocalStorage(platform)
     }
   },
-  setLSHighScoreMobile(highScore){
-    window.localStorage.setItem('ms_hs_mobile', highScore)
+  setLocalStorage(URL, content){
+    const newContent = JSON.stringify(content)
+    window.localStorage.setItem(URL, newContent)
   },
-  getLSHighScoreDesktop(){
-    const highScore = JSON.parse(window.localStorage.getItem('ms_hs_desktop'))
-    
-    if(highScore !== null){
-      this.highScoreDesktop = highScore
-    } else {
-      const score = JSON.stringify(this.highScoreDesktop)
-      this.setLSHighScoreDesktop(score)
-    }
-  },
-  setLSHighScoreDesktop(highScore){
-    window.localStorage.setItem('ms_hs_desktop', highScore)
-  },
+  
   setCSRFToken(){
     this.csrftoken = getCookie('csrftoken');
     
@@ -127,7 +129,6 @@ export default {
         reject(`Error ${request.status}: ${request.statusText}`)
       })
       
-      // const URL = platform ? `/score/${platform}/` : '/score/'
       request.open('POST', '/score/create/')
       request.setRequestHeader('X-CSRFToken', this.csrftoken)
       request.send(body) 
@@ -136,6 +137,7 @@ export default {
   
   async render(platform = ''){
     const array = await this.getRequestReadScores(platform)
+    
     // console.log(array) //DEBUG
     // console.log(this.highScoreMobile)  //DEBUG
     // console.log(this.highScoreDesktop) //DEBUG
@@ -150,19 +152,23 @@ export default {
   },
   
   async submitScore(score){
-    if(score.Score && score.Nickname && score.Platform){
-      const scoreJson = JSON.stringify(score)
-      const published = this.postRequestCreateScore(scoreJson)
+    if(score && score.Score && score.Score > 0 && score.Nickname && score.Platform){
+      const newScore = JSON.stringify(score)
+      const published = this.postRequestCreateScore(newScore)
       
       score.Date = new Date
-      score.Published = published
+      score.Published = true
       
       if(score.Platform === 'ML'){
-        this.setLSHighScoreMobile(score)
+        this.setLocalStorage('ms_hs_mobile', score)
       } else {
-        this.setLSHighScoreDesktop(score)
+        this.setLocalStorage('ms_hs_desktop', score)
       }
+      this.getLocalStorage(score.Platform)
       this.rerender(score.Platform)
+      
+    } else {
+      throw new Error('Object Score doesnt match the requirements')
     }
   },
   
@@ -170,7 +176,6 @@ export default {
     let html
     const desktopHSClass = !this.highScoreDesktop.Published ? 'published' : 'unpublished' //REMOVER EXCLAMAÇÃO AIAIAIAIAIAI
     const mobileHSClass = this.highScoreMobile.Published ? 'published' : 'unpublished'
-    // console.log(mobileHSClass === 'unpublished') //DEBUG
     
     html = 
     `<table>

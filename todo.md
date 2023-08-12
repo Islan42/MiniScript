@@ -7,6 +7,7 @@
   - [X] Portabilidade para celulares
   - []  Alterar o carregamento de assets para usar import ou require
   - []  Reorganizar os assets para separar os game assets
+  - []  Testar getRequestReadScores() com diferentes platforms
 
   ## MELHORIAS
 
