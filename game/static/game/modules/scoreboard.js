@@ -1,6 +1,6 @@
 export default {
-  highScoreMobile: 'teste1',
-  highScoreDesktop: 'teste2',
+  highScoreMobile: {},
+  highScoreDesktop: {},
   scoresArray: [],
   div: '',
   csrftoken: '',
@@ -12,8 +12,9 @@ export default {
     this.getLocalStorage('ML')
     this.getLocalStorage('DT')
     this.setCSRFToken()
-    this.render('desktop')
-    // this.submitScore({ Nickname: 'ABC', Score: 2, Platform: 'ML', Date: new Date, Published: true }) //DEBUG
+    this.render()
+    // this.submitScore({ Nickname: 'ABC', Score: 2, Platform: 'ML', Date: new Date, Published: true }).then((res) => console.log(res)) //DEBUG
+    // console.log(this.submitScore({Nickname: 'Unico'})) //DEBUG
     console.log('Successfully initialized') //DEBUG
   },
   
@@ -152,12 +153,12 @@ export default {
   },
   
   async submitScore(score){
-    if(score && score.Score && score.Score > 0 && score.Nickname && score.Platform){
+    if(score && score.Nickname && score.Score && score.Score > 0 && score.Platform && score.Published){
       const newScore = JSON.stringify(score)
-      const published = this.postRequestCreateScore(newScore)
+      const newNewScore = JSON.parse(await this.postRequestCreateScore(newScore))   //
       
       score.Date = new Date
-      score.Published = true
+      score.Published = newNewScore.Published //
       
       if(score.Platform === 'ML'){
         this.setLocalStorage('ms_hs_mobile', score)
@@ -249,6 +250,27 @@ export default {
     }
   },
   createEventHandlers(){
-    return
+    const mobileBtn = document.querySelector('thead #mobile-hs button')
+    const desktopBtn = document.querySelector('thead #desktop-hs button')
+    
+    console.log(desktopBtn)
+    console.log(mobileBtn)
+    
+    if (desktopBtn) {
+      desktopBtn.addEventListener('click', async () => {
+        try {
+          const score = this.highScoreDesktop
+          this.submitScore(score)
+        } catch(error) {
+          
+        }
+      })
+    }
+    
+    if (mobileBtn) {
+      mobileBtn.addEventListener('click', () =>{
+        const score = this.highScoreMobile
+      })
+    }
   },
 }

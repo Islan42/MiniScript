@@ -10,19 +10,19 @@ def index(request):
     pass
     
 def top_desktop(request):
-    query_set = Record.objects.filter(platform__exact='DT').order_by('-score')
+    query_set = Record.objects.filter(platform__exact='DT').order_by('-score')[:5]
     
     topScores = generateTopScores(query_set)
     return JsonResponse(topScores, safe=False)
     
 def top_mobile(request):
-    query_set = Record.objects.filter(platform__exact='ML').order_by('-score')
+    query_set = Record.objects.filter(platform__exact='ML').order_by('-score')[:5]
     
     topScores = generateTopScores(query_set)
     return JsonResponse(topScores, safe=False)
     
 def top_general(request):
-    query_set = Record.objects.order_by('-score')
+    query_set = Record.objects.order_by('-score')[:5]
     
     topScores = generateTopScores(query_set)
     return JsonResponse(topScores, safe=False)
@@ -39,9 +39,9 @@ def scoreCreate(request):
             scoreCreatePersist(score)
         except:
             raise Http404("Error when creating Record")
-        
-        response = json.dumps(score)
-        return HttpResponse(response)
+        else:
+            response = json.dumps(score)
+            return HttpResponse(response)
     else:
         return HttpResponseNotFound("Not found")
 
