@@ -91,14 +91,14 @@ export default class MiniScript {
     bugs.src = "/static/game/assets/bugs.png"
     this.assets = { lorem, desk, key, spacebar, penalties, bugs };
     
-    // console.log(ScoreBoard.render()) APAGAR
+    // console.log(ScoreBoard.highScoreMobile)  //DEBUG
     this.gameStart()
     this.main()
   }
   
   main(){
     timeControl.nextFrame.call(this)
-    timeControl.updateBugsTimer.call(this)  //
+    timeControl.updateBugsTimer.call(this)
     gameControl.checkBoost.call(this)
     this.animation()
     this.idRAF = requestAnimationFrame(this.main.bind(this))
