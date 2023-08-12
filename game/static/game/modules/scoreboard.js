@@ -6,6 +6,8 @@ export default {
   csrftoken: '',
   
   init(div){
+    window.localStorage.removeItem('ms_hs_mobile')  //DEBUG
+    window.localStorage.removeItem('ms_hs_desktop') //DEBUG
     this.setDiv(div)
     this.highScoreMobile = { Nickname: 'ABC', Score: 0, Platform: 'ML', Date: new Date, Published: true }
     this.highScoreDesktop = { Nickname: 'ABC', Score: 0, Platform: 'DT', Date: new Date, Published: true }
@@ -32,12 +34,11 @@ export default {
     if(highScore !== null){
       this.highScoreMobile = highScore
     } else {
-      this.setLSHighScoreMobile()
+      const score = JSON.stringify(this.highScoreMobile)
+      this.setLSHighScoreMobile(score)
     }
   },
-  setLSHighScoreMobile(){
-    const highScore = JSON.stringify(this.highScoreMobile)
-    
+  setLSHighScoreMobile(highScore){
     window.localStorage.setItem('ms_hs_mobile', highScore)
   },
   getLSHighScoreDesktop(){
@@ -46,12 +47,11 @@ export default {
     if(highScore !== null){
       this.highScoreDesktop = highScore
     } else {
-      this.setLSHighScoreDesktop()
+      const score = JSON.stringify(this.highScoreDesktop)
+      this.setLSHighScoreDesktop(score)
     }
   },
-  setLSHighScoreDesktop(){
-    const highScore = JSON.stringify(this.highScoreDesktop)
-    
+  setLSHighScoreDesktop(highScore){
     window.localStorage.setItem('ms_hs_desktop', highScore)
   },
   setCSRFToken(){
@@ -99,7 +99,7 @@ export default {
       request.send()      
     })
   },  
-  postRequestCreateScore(score){
+  postRequestCreateScore(body){
     return new Promise ((resolve, reject) =>{
       const request = new XMLHttpRequest()
       
@@ -119,7 +119,7 @@ export default {
       // const URL = platform ? `/score/${platform}/` : '/score/'
       request.open('POST', '/score/create/')
       request.setRequestHeader('X-CSRFToken', this.csrftoken)
-      request.send(score) 
+      request.send(body) 
     })
   },
   
@@ -139,9 +139,12 @@ export default {
   },
   
   async submitScore(score){
-    const result = this.postRequestCreateScore(score)
+    const scoreJson = JSON.stringify(score)
+    const result = this.postRequestCreateScore(scoreJson)
     
-  }
+    
+    
+  },
   
   generateHTML(array){
     let html
