@@ -15,7 +15,7 @@ export default {
     // console.log(this.csrftoken) //DEBUG
     // const json = JSON.stringify({Nickname: 'ABCDE', Score: 1, Platform: 'ML', Date: new Date, Published: true})
     // const json = JSON.stringify({a: 5})
-    // this.setScoreDatabase(json)
+    // this.postRequestCreateScore(json)
       // .then((res) => console.log(res))
       // .catch((error) => console.log(error))
     this.render()
@@ -75,7 +75,7 @@ export default {
     }
   },
   
-  getScoresArray(platform = ''){
+  getRequestReadScores(platform = ''){
     return new Promise((resolve, reject) => {
       const request = new XMLHttpRequest()
       
@@ -98,9 +98,8 @@ export default {
       request.open('GET', URL)
       request.send()      
     })
-  },
-  
-  setScoreDatabase(score){
+  },  
+  postRequestCreateScore(score){
     return new Promise ((resolve, reject) =>{
       const request = new XMLHttpRequest()
       
@@ -125,7 +124,7 @@ export default {
   },
   
   async render(platform = ''){
-    const array = await this.getScoresArray(platform)
+    const array = await this.getRequestReadScores(platform)
     // console.log(array) //DEBUG
     // console.log(this.highScoreMobile)  //DEBUG
     // console.log(this.highScoreDesktop) //DEBUG
@@ -134,9 +133,15 @@ export default {
     this.addEventListener()
 
   },
+  
   rerender(platform = ''){
     this.render(platform)
   },
+  
+  async submitScore(score){
+    const result = this.postRequestCreateScore(score)
+    
+  }
   
   generateHTML(array){
     let html
