@@ -6,8 +6,8 @@ export default {
   csrftoken: '',
   
   init(div){
-    // window.localStorage.removeItem('ms_hs_mobile')  //DEBUG
-    // window.localStorage.removeItem('ms_hs_desktop') //DEBUG
+    window.localStorage.removeItem('ms_hs_mobile')  //DEBUG
+    window.localStorage.removeItem('ms_hs_desktop') //DEBUG
     this.setDiv(div)
     this.getLocalStorage('ML')
     this.getLocalStorage('DT')
@@ -43,11 +43,11 @@ export default {
     // console.log('Oi') //DEBUG
     
     const score = JSON.parse(window.localStorage.getItem(URL))
-    if(score && score.Score && score.Nickname && score.Platform && score.Published){
+    if(score && score.Score && score.Nickname && score.Platform && score.Published !== null){
       this[attr] = score
     } else {
       const abcPl = URL === 'ms_hs_mobile' ? 'ML' : 'DT'
-      const abc = { Nickname: 'ABC', Score: -1, Platform: abcPl, Date: new Date, Published: true }
+      const abc = { Nickname: 'ABC', Score: 2205, Platform: abcPl, Date: new Date, Published: false }  //DEBUG AGORA
       this.setLocalStorage(URL, abc)
       this.getLocalStorage(platform)
     }
@@ -153,12 +153,13 @@ export default {
   },
   
   async submitScore(score){
-    if(score && score.Nickname && score.Score && score.Score > 0 && score.Platform && score.Published){
+    if(score && score.Nickname && score.Score && score.Score > 0 && score.Platform && score.Published !== null){
       const newScore = JSON.stringify(score)
       const newNewScore = JSON.parse(await this.postRequestCreateScore(newScore))   //
+      //test if continues after throwing an error: Se nao usar await, o código continua executando os códigos abaixo, sem captura o Erro
       
       score.Date = new Date
-      score.Published = newNewScore.Published //
+      score.Published = true //
       
       if(score.Platform === 'ML'){
         this.setLocalStorage('ms_hs_mobile', score)
@@ -169,13 +170,13 @@ export default {
       this.rerender(score.Platform)
       
     } else {
-      throw new Error('Object Score doesnt match the requirements')
+      throw new Error('Score object doesnt match the requirements')
     }
   },
   
   generateHTML(array){
     let html
-    const desktopHSClass = !this.highScoreDesktop.Published ? 'published' : 'unpublished' //REMOVER EXCLAMAÇÃO AIAIAIAIAIAI
+    const desktopHSClass = this.highScoreDesktop.Published ? 'published' : 'unpublished' //REMOVER EXCLAMAÇÃO AIAIAIAIAIAI
     const mobileHSClass = this.highScoreMobile.Published ? 'published' : 'unpublished'
     
     html = 
@@ -253,24 +254,29 @@ export default {
     const mobileBtn = document.querySelector('thead #mobile-hs button')
     const desktopBtn = document.querySelector('thead #desktop-hs button')
     
-    console.log(desktopBtn)
-    console.log(mobileBtn)
-    
     if (desktopBtn) {
-      desktopBtn.addEventListener('click', async () => {
-        try {
-          const score = this.highScoreDesktop
-          this.submitScore(score)
-        } catch(error) {
-          
-        }
-      })
+      const score = this.highScoreDesktop
+      desktopBtn.addEventListener('click', submitHandler.bind(this, score))
     }
     
     if (mobileBtn) {
-      mobileBtn.addEventListener('click', () =>{
-        const score = this.highScoreMobile
-      })
+      const score = this.highScoreMobile
+      mobileBtn.addEventListener('click', submitHandler.bind(this, score))
+    }
+    
+    async function submitHandler(score){
+      try {
+        const input = document.getElementById('nick-input')
+        if(!(input && input.value)){
+          throw new Error('You must provide a nickname')
+        }
+        const nickname = input.value
+        score.Nickname = nickname
+        
+        await this.submitScore(score)
+      } catch(error) {
+        console.log(`${error}. Try Re-Submit.`)
+      }
     }
   },
 }
