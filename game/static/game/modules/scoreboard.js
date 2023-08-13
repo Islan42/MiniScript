@@ -6,14 +6,13 @@ export default {
   csrftoken: '',
   
   init(div){
-    window.localStorage.removeItem('ms_hs_mobile')  //DEBUG
-    window.localStorage.removeItem('ms_hs_desktop') //DEBUG
+    // window.localStorage.removeItem('ms_hs_mobile')  //DEBUG
+    // window.localStorage.removeItem('ms_hs_desktop') //DEBUG
     this.setDiv(div)
     this.getLocalStorage('ML')
     this.getLocalStorage('DT')
     this.setCSRFToken()
     this.render()
-    // this.submitScore({ Nickname: 'ABC', Score: 2, Platform: 'ML', Date: new Date, Published: true }).then((res) => console.log(res)) //DEBUG
     // console.log(this.submitScore({Nickname: 'Unico'})) //DEBUG
     console.log('Successfully initialized') //DEBUG
   },
@@ -40,14 +39,12 @@ export default {
         throw new Error('platform argument not specified')
     }
     
-    // console.log('Oi') //DEBUG
-    
     const score = JSON.parse(window.localStorage.getItem(URL))
     if(score && score.Score && score.Nickname && score.Platform && score.Published !== null){
       this[attr] = score
     } else {
       const abcPl = URL === 'ms_hs_mobile' ? 'ML' : 'DT'
-      const abc = { Nickname: 'ABC', Score: 2205, Platform: abcPl, Date: new Date, Published: false }  //DEBUG AGORA
+      const abc = { Nickname: 'ABC', Score: -1, Platform: abcPl, Date: new Date, Published: false } //DEBUG AGORA
       this.setLocalStorage(URL, abc)
       this.getLocalStorage(platform)
     }
@@ -265,6 +262,7 @@ export default {
     }
     
     async function submitHandler(score){
+      event.preventDefault()
       try {
         const input = document.getElementById('nick-input')
         if(!(input && input.value)){
