@@ -1,3 +1,5 @@
+import ScoreBoard from "./scoreboard.js"
+
 const animate = {
   drawDesk() {
     this.ctx.save() // SAVE 01: DESK
@@ -728,4 +730,73 @@ const timeControl = {
   
 }
 
-export { animate, canvasAux, inputGame, gameControl, lvlControl, bugsTimeControl, timeControl, }
+const scoreboardAPI = {
+  bindDesktopSubmitHandler: '',
+  bindMobileSubmitHandler: '',
+  
+  isHighScore(pts, desktop){
+    const platform = desktop ? 'DT' : 'ML'
+    const score = { Score: pts }
+    return ScoreBoard.isHighScore(score, platform)
+    // const response = ScoreBoard.isHighScore(score, platform)   //DEBUG
+    // console.log('isHighScore', response)
+  },
+  
+  createSubmitHandler(pts, desktop, root = ''){
+    if(desktop){
+      this.bindDesktopSubmitHandler = this.desktopSubmitHandler.bind(this, pts, desktop)
+      document.addEventListener('keydown', this.bindDesktopSubmitHandler)
+    } else {
+      this.bindMobileSubmitHandler = this.mobileSubmitHandler.bind(this, pts, desktop)
+      root.addEventListener('click', this.bindMobileSubmitHandler)
+    }
+  },
+  destroySubmitHandler(desktop, root = ''){
+    if(desktop){
+      document.removeEventListener('keydown', this.bindDesktopSubmitHandler)
+      // this.bindDesktopSubmitHandler = ''  // DEBUG PERMANENT
+      // console.log(this.bindDesktopSubmitHandler)
+    } else {
+      root.removeEventListener('click', this.bindMobileSubmitHandler)
+      // this.bindMobileSubmitHandler = ''   // DEBUG PERMANENT
+      // console.log(this.bindMobileSubmitHandler)
+    }
+  },
+  async desktopSubmitHandler(pts, desktop, event){
+    if(event.key.toLowerCase() === 'enter'){
+      try {
+        await this.submitScore(pts, desktop)
+      } catch(error){
+        error.log(error)
+      }
+    }
+  },
+  mobileSubmitHandler(event, pts, desktop){
+    return  //  AINDA NÃO É NECESSÁRIO
+  },
+  
+  submitScore(pts, desktop, root = ''){
+    let nickname
+    if(ScoreBoard.nickInput && ScoreBoard.nickInput.value){
+      nickname = ScoreBoard.nickInput.value
+    } else {
+      throw new Error('Nickname must be provided.')
+      // console.log('Nickname must be provided.')
+    }
+    const platform = desktop ? 'DT' : 'ML'
+    const score = { Nickname: nickname, Score: pts, Platform: platform, Published: false }
+    return ScoreBoard.submitScore(score)  //RETURN PROMISE
+      .then(() => {
+        this.destroySubmitHandler(desktop, root)
+        console.log('success')  //DEBUG
+        // return true     //PROVAVELMENTE USAR VARIAVES DE MINISCRIPT.JS PARA ESPERAR POR UM VALOR
+      })
+      .catch(() => {
+        ScoreBoard.setNewLocalStorage(score)
+        console.log('fail')   // DEBUG
+        // return false    //PROVAVELMENTE USAR VARIAVES DE MINISCRIPT.JS PARA ESPERAR POR UM VALOR
+      })
+  },
+}
+
+export { animate, canvasAux, inputGame, gameControl, lvlControl, bugsTimeControl, timeControl, scoreboardAPI}

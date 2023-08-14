@@ -8,6 +8,8 @@
   - []  Alterar o carregamento de assets para usar import ou require
   - []  Reorganizar os assets para separar os game assets
   - [X]  Testar getRequestReadScores() com diferentes platforms
+  - [X]  TESTAR submitScore()
+  - []  miniscript.js -> Apos gameover chamar setLocalStorage(), isso vai resolver o problema do mobile de nao atualizar os pontos também
 
   ## MELHORIAS
 

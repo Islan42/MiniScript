@@ -3,22 +3,29 @@ export default {
   highScoreDesktop: {},
   scoresArray: [],
   div: '',
+  nickInput: '',
   csrftoken: '',
   
-  init(div){
-    // window.localStorage.removeItem('ms_hs_mobile')  //DEBUG
-    // window.localStorage.removeItem('ms_hs_desktop') //DEBUG
+  async init(div){
+    window.localStorage.removeItem('ms_hs_mobile')  //DEBUG
+    window.localStorage.removeItem('ms_hs_desktop') //DEBUG
     this.setDiv(div)
     this.getLocalStorage('ML')
     this.getLocalStorage('DT')
     this.setCSRFToken()
-    this.render()
+    await this.render()
+    this.setNickInput()
     // console.log(this.submitScore({Nickname: 'Unico'})) //DEBUG
     console.log('Successfully initialized') //DEBUG
   },
   
   setDiv(div){
     this.div = div
+  },
+  
+  setNickInput(){
+    const input = document.getElementById('nick-input')
+    this.nickInput = input
   },
   
   getLocalStorage(platform){
@@ -152,12 +159,21 @@ export default {
   async submitScore(score){
     if(score && score.Nickname && score.Score && score.Score > 0 && score.Platform && score.Published !== null){
       const newScore = JSON.stringify(score)
-      const newNewScore = JSON.parse(await this.postRequestCreateScore(newScore))   //
+      // score = JSON.parse(await this.postRequestCreateScore(newScore))   //TESTAR
       //test if continues after throwing an error: Se nao usar await, o código continua executando os códigos abaixo, sem captura o Erro
+      await this.postRequestCreateScore(newScore)
       
       score.Date = new Date
       score.Published = true //
       
+      this.setNewLocalStorage(score)
+      
+    } else {
+      throw new Error('Score object doesnt match the requirements')
+    }
+  },
+  setNewLocalStorage(score){
+    if(score && score.Nickname && score.Score && score.Platform && score.Published !== null){
       if(score.Platform === 'ML'){
         this.setLocalStorage('ms_hs_mobile', score)
       } else {
@@ -165,10 +181,10 @@ export default {
       }
       this.getLocalStorage(score.Platform)
       this.rerender(score.Platform)
-      
     } else {
       throw new Error('Score object doesnt match the requirements')
     }
+    
   },
   
   generateHTML(array){
@@ -262,9 +278,8 @@ export default {
     }
     
     async function submitHandler(score){
-      event.preventDefault()
       try {
-        const input = document.getElementById('nick-input')
+        const input = this.nickInput
         if(!(input && input.value)){
           throw new Error('You must provide a nickname')
         }
@@ -275,6 +290,21 @@ export default {
       } catch(error) {
         console.log(`${error}. Try Re-Submit.`)
       }
+    }
+  },
+  
+  isHighScore(score, platform){
+    switch(platform){
+      case 'DT':
+      case 'desktop':
+        return score.Score > this.highScoreDesktop.Score
+        break
+      case 'ML':
+      case 'mobile':
+        return score.Score > this.highScoreMobile.Score
+        break
+      default:
+        throw new Error('Platform argument incorrect.')
     }
   },
 }

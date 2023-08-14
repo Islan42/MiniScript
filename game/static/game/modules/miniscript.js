@@ -1,4 +1,4 @@
-import { animate, canvasAux, inputGame, gameControl, lvlControl, bugsTimeControl, timeControl, } from "./utils.js"
+import { animate, canvasAux, inputGame, gameControl, lvlControl, bugsTimeControl, timeControl, scoreboardAPI, } from "./utils.js"
 import ScoreBoard from "./scoreboard.js"
 
 export default class MiniScript {
@@ -161,6 +161,10 @@ export default class MiniScript {
 
     this.canvas.addEventListener("click", this.callGameStartBind)
     document.addEventListener("keydown", this.callGameStartBind)
+    
+    if(scoreboardAPI.isHighScore(this.score, this.desktop)){
+      scoreboardAPI.createSubmitHandler(this.score, this.desktop)
+    }
   }
   
   callGameStart(event){
@@ -168,11 +172,13 @@ export default class MiniScript {
     if (event.type === "click") {
       this.canvas.removeEventListener("click", this.callGameStartBind)
       document.removeEventListener("keydown", this.callGameStartBind)
+      scoreboardAPI.destroySubmitHandler(this.desktop, this.root)         //NAO IMPLEMENTAR SUBMIT HANDLER PARA MOBILE AINDA
       this.gameStart()
     } else if (event.type === "keydown") {
       if (event.key === " ") {
         this.canvas.removeEventListener("click", this.callGameStartBind)
         document.removeEventListener("keydown", this.callGameStartBind)
+        scoreboardAPI.destroySubmitHandler(this.desktop, this.root)         //NAO IMPLEMENTAR SUBMIT HANDLER PARA MOBILE AINDA
         event.preventDefault();
         this.gameStart()
       }
@@ -207,6 +213,7 @@ export default class MiniScript {
     this.gameOver()
     this.canvas.removeEventListener("click", this.callGameStartBind)
     document.removeEventListener("keydown", this.callGameStartBind)
+    scoreboardAPI.destroySubmitHandler(this.desktop, this.root)         //NAO IMPLEMENTAR SUBMIT HANDLER PARA MOBILE AINDA
     cancelAnimationFrame(this.idRAF)
   }
   
