@@ -738,8 +738,15 @@ const scoreboardAPI = {
     const platform = desktop ? 'DT' : 'ML'
     const score = { Score: pts }
     return ScoreBoard.isHighScore(score, platform)
-    // const response = ScoreBoard.isHighScore(score, platform)   //DEBUG
-    // console.log('isHighScore', response)
+  },
+  
+  setNewLocalStorage(pts, desktop){
+    try {
+      const score = this.createScoreObject(pts, desktop, 'ABC')
+      ScoreBoard.setNewLocalStorage(score)
+    } catch (error){
+      console.log(error)
+    }
   },
   
   createSubmitHandler(pts, desktop, root = ''){
@@ -753,13 +760,17 @@ const scoreboardAPI = {
   },
   destroySubmitHandler(desktop, root = ''){
     if(desktop){
-      document.removeEventListener('keydown', this.bindDesktopSubmitHandler)
-      // this.bindDesktopSubmitHandler = ''  // DEBUG PERMANENT
-      // console.log(this.bindDesktopSubmitHandler)
+      if(this.bindDesktopSubmitHandler){
+        document.removeEventListener('keydown', this.bindDesktopSubmitHandler)
+        // this.bindDesktopSubmitHandler = ''  // DEBUG PERMANENT
+        // console.log(this.bindDesktopSubmitHandler)
+      }
     } else {
-      root.removeEventListener('click', this.bindMobileSubmitHandler)
-      // this.bindMobileSubmitHandler = ''   // DEBUG PERMANENT
-      // console.log(this.bindMobileSubmitHandler)
+      if(this.bindMobileSubmitHandler){
+        root.removeEventListener('click', this.bindMobileSubmitHandler)
+        // this.bindMobileSubmitHandler = ''   // DEBUG PERMANENT
+        // console.log(this.bindMobileSubmitHandler)
+      }
     }
   },
   async desktopSubmitHandler(pts, desktop, event){
@@ -767,7 +778,7 @@ const scoreboardAPI = {
       try {
         await this.submitScore(pts, desktop)
       } catch(error){
-        error.log(error)
+        console.log(error)
       }
     }
   },
@@ -776,15 +787,7 @@ const scoreboardAPI = {
   },
   
   submitScore(pts, desktop, root = ''){
-    let nickname
-    if(ScoreBoard.nickInput && ScoreBoard.nickInput.value){
-      nickname = ScoreBoard.nickInput.value
-    } else {
-      throw new Error('Nickname must be provided.')
-      // console.log('Nickname must be provided.')
-    }
-    const platform = desktop ? 'DT' : 'ML'
-    const score = { Nickname: nickname, Score: pts, Platform: platform, Published: false }
+    const score = this.createScoreObject(pts, desktop)
     return ScoreBoard.submitScore(score)  //RETURN PROMISE
       .then(() => {
         this.destroySubmitHandler(desktop, root)
@@ -796,6 +799,19 @@ const scoreboardAPI = {
         console.log('fail')   // DEBUG
         // return false    //PROVAVELMENTE USAR VARIAVES DE MINISCRIPT.JS PARA ESPERAR POR UM VALOR
       })
+  },
+  
+  createScoreObject(pts, desktop, nickname = ''){
+    if(!nickname){
+      if(ScoreBoard.nickInput && ScoreBoard.nickInput.value){
+        nickname = ScoreBoard.nickInput.value
+      } else {
+        throw 'Nickname must be provided.'
+      }
+    }
+    const platform = desktop ? 'DT' : 'ML'
+    const score = { Nickname: nickname, Score: pts, Platform: platform, Published: false }
+    return score
   },
 }
 

@@ -14,7 +14,7 @@ export default {
     this.getLocalStorage('DT')
     this.setCSRFToken()
     await this.render()
-    this.setNickInput()
+    
     // console.log(this.submitScore({Nickname: 'Unico'})) //DEBUG
     console.log('Successfully initialized') //DEBUG
   },
@@ -51,7 +51,7 @@ export default {
       this[attr] = score
     } else {
       const abcPl = URL === 'ms_hs_mobile' ? 'ML' : 'DT'
-      const abc = { Nickname: 'ABC', Score: -1, Platform: abcPl, Date: new Date, Published: false } //DEBUG AGORA
+      const abc = { Nickname: 'ABC', Score: -1, Platform: abcPl, Date: new Date, Published: true } //DEBUG AGORA
       this.setLocalStorage(URL, abc)
       this.getLocalStorage(platform)
     }
@@ -149,7 +149,7 @@ export default {
     
     this.generateHTML(array)
     this.createEventHandlers()
-
+    this.setNickInput()
   },
   
   rerender(platform = ''){

@@ -163,7 +163,8 @@ export default class MiniScript {
     document.addEventListener("keydown", this.callGameStartBind)
     
     if(scoreboardAPI.isHighScore(this.score, this.desktop)){
-      scoreboardAPI.createSubmitHandler(this.score, this.desktop)
+      scoreboardAPI.setNewLocalStorage(this.score, this.desktop)
+      scoreboardAPI.createSubmitHandler(this.score, this.desktop, this.root)
     }
   }
   
