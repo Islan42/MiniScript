@@ -1,6 +1,11 @@
 import ScoreBoard from "./scoreboard.js"
 
 const animate = {
+  isHighScore: '',
+  isHighScoreSubmited: '',
+  msgGameOver: '',
+  labelNewColorBlue: true,
+  
   drawDesk() {
     this.ctx.save() // SAVE 01: DESK
     if (this.negativeAnim) {
@@ -264,9 +269,24 @@ const animate = {
     const measureLvlX = ctx.measureText(`LVL: ${this.lvl.maxLvl}`);
     const posLvlX = width/2 - measureLvlX.width/2;
     ctx.fillText(`LVL: ${this.lvl.maxLvl}`, posLvlX, width/(500/105));
-    const measureScoreX = ctx.measureText(`SCORE: ${this.score}`);
-    const posScoreX = width/2 - measureScoreX.width/2;
-    ctx.fillText(`SCORE: ${this.score}`, posScoreX, width/(500/130));
+    
+    //DRAW SCORE TEXT
+    ctx.save()
+      ctx.fillStyle = animate.isHighScore ? "rgb(0,0,220)" : "rgb(220,0,0)"
+      const measureScoreX = ctx.measureText(`SCORE: ${this.score}`);
+      const posScoreX = width/2 - measureScoreX.width/2;
+      ctx.fillText(`SCORE: ${this.score}`, posScoreX, width/(500/130));
+      
+      if(animate.isHighScore){
+        ctx.fillStyle = animate.labelNewColorBlue ? "rgb(0,0,220)" : "rgb(220,0,0)"
+        font = width/(500/14)
+        ctx.font = `bold ${font}px sans-serif`;
+        const measureLabelNew = ctx.measureText(`SCORE: ${this.score}`)
+        const posXLabelNew = posScoreX + measureLabelNew.width + width/(500/50)
+        
+        ctx.fillText(`NEW`, posXLabelNew, width/(500/130));
+      }
+    ctx.restore()
     
     if (this.controlFR % 31 === 0) {
       if (this.spriteRestart === 1) {
@@ -274,12 +294,17 @@ const animate = {
       } else {
         this.spriteRestart = 1
       }
+      animate.labelNewColorBlue = !animate.labelNewColorBlue
     }
     const measureRestartX = ctx.measureText(`RESTART`);
     const posRestartX = width/2 - measureRestartX.width/2;
     ctx.fillText(`RESTART`, posRestartX + 3 * this.spriteRestart, width/(500/155) - 3 * this.spriteRestart);
     ctx.restore();
   },
+  
+  drawGameOverHighScore(){
+    return
+  }
 }
 
 const canvasAux = {
