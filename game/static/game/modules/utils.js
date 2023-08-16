@@ -272,20 +272,52 @@ const animate = {
     
     //DRAW SCORE TEXT
     ctx.save()
-      ctx.fillStyle = animate.isHighScore ? "rgb(0,0,220)" : "rgb(220,0,0)"
+      const scoreColor = animate.isHighScore ? (animate.isHighScoreSubmited ? "rgb(0,220,0)": "rgb(0,0,220)") : "rgb(220,0,0)"
+      
       const measureScoreX = ctx.measureText(`SCORE: ${this.score}`);
       const posScoreX = width/2 - measureScoreX.width/2;
-      ctx.fillText(`SCORE: ${this.score}`, posScoreX, width/(500/130));
+      ctx.fillText(`SCORE: `, posScoreX, width/(500/130));
+      
+      const measureScoreXLabel = ctx.measureText(`SCORE: `);
+      const posScoreXScore = posScoreX + measureScoreXLabel.width
+      ctx.fillStyle = scoreColor
+      ctx.fillText(`${this.score}`, posScoreXScore, width/(500/130));
       
       if(animate.isHighScore){
         ctx.fillStyle = animate.labelNewColorBlue ? "rgb(0,0,220)" : "rgb(220,0,0)"
+        ctx.textAlign = 'center'
         font = width/(500/14)
         ctx.font = `bold ${font}px sans-serif`;
         const measureLabelNew = ctx.measureText(`SCORE: ${this.score}`)
-        const posXLabelNew = posScoreX + measureLabelNew.width + width/(500/50)
+        const posXLabelNew = posScoreX + measureLabelNew.width + width/(500/75)
         
         ctx.fillText(`NEW`, posXLabelNew, width/(500/130));
+        
+        if(animate.msgGameOver){
+          // const posXMsgLabel = posXLabelNew + width/(500/18)
+          ctx.textAlign = 'center'
+          font = width/(500/12)
+          ctx.font = `bold ${font}px sans-serif`;
+          switch(animate.msgGameOver){
+            case 'SUBMIT ERROR':
+              ctx.fillStyle = "rgb(220,0,0)"
+              ctx.fillText(`SUBMIT`, posXLabelNew, width/(500/150));
+              ctx.fillText(`ERROR`, posXLabelNew, width/(500/165));
+              break
+            case 'SUCCESS':
+              ctx.fillStyle = "rgb(0,220,00)"
+              ctx.fillText(`SUCCESS`, posXLabelNew, width/(500/150));
+              break
+            case 'PRESS ENTER TO SUBMIT':
+              ctx.fillStyle = "rgb(0,0,220)"
+              ctx.fillText(`PRESS ENTER`, posXLabelNew, width/(500/150));
+              ctx.fillText(`TO SUBMIT`, posXLabelNew, width/(500/165));
+              break
+          }
+          // ctx.fillText(`${animate.msgGameOver}`, posXLabelNew, width/(500/150));
+        }
       }
+      
     ctx.restore()
     
     if (this.controlFR % 31 === 0) {
@@ -802,8 +834,11 @@ const scoreboardAPI = {
     if(event.key.toLowerCase() === 'enter'){
       try {
         await this.submitScore(pts, desktop)
+        animate.msgGameOver = 'SUCCESS'
+        animate.isHighScoreSubmited = true
       } catch(error){
         console.log(error)
+        animate.msgGameOver = 'SUBMIT ERROR'
       }
     }
   },

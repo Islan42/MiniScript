@@ -164,7 +164,8 @@ export default class MiniScript {
     
     if(scoreboardAPI.isHighScore(this.score, this.desktop)){
       scoreboardAPI.setNewLocalStorage(this.score, this.desktop)
-      animate.isHighScore = true
+        animate.isHighScore = true
+        animate.msgGameOver = 'PRESS ENTER TO SUBMIT'
       scoreboardAPI.createSubmitHandler(this.score, this.desktop, this.root)
     }
   }
@@ -175,16 +176,18 @@ export default class MiniScript {
       this.canvas.removeEventListener("click", this.callGameStartBind)
       document.removeEventListener("keydown", this.callGameStartBind)
       scoreboardAPI.destroySubmitHandler(this.desktop, this.root)         //NAO IMPLEMENTAR SUBMIT HANDLER PARA MOBILE AINDA
-      animate.isHighScore = false
-      animate.msgGameOver = ''
+        animate.isHighScore = false
+        animate.msgGameOver = ''
+        animate.isHighScoreSubmited = false
       this.gameStart()
     } else if (event.type === "keydown") {
       if (event.key === " ") {
         this.canvas.removeEventListener("click", this.callGameStartBind)
         document.removeEventListener("keydown", this.callGameStartBind)
         scoreboardAPI.destroySubmitHandler(this.desktop, this.root)         //NAO IMPLEMENTAR SUBMIT HANDLER PARA MOBILE AINDA
-        animate.isHighScore = false
-        animate.msgGameOver = ''
+          animate.isHighScore = false
+          animate.msgGameOver = ''
+          animate.isHighScoreSubmited = false
         event.preventDefault();
         this.gameStart()
       }
