@@ -9,7 +9,9 @@
   - []  Reorganizar os assets para separar os game assets
   - [X]  Testar getRequestReadScores() com diferentes platforms
   - [X]  TESTAR submitScore()
-  - []  miniscript.js -> Apos gameover chamar setLocalStorage(), isso vai resolver o problema do mobile de nao atualizar os pontos também
+  - [X]  miniscript.js -> Apos gameover chamar setLocalStorage(), isso vai resolver o problema do mobile de nao atualizar os pontos também
+  - []  Refatorar utils.js para aux.js de maneira mais coerente
+  - []  Refatorar a Animação
 
   ## MELHORIAS
 
