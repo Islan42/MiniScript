@@ -20,8 +20,11 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
+from django.views.generic import RedirectView
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('score/', include('score.urls')),
     path('game/', include('game.urls')),
+    path('', RedirectView.as_view(url='game/', permanent=True)),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
