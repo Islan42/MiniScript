@@ -1,12 +1,12 @@
-# MiniCode
+# MiniScript
 
-You can also [read this in english](#minicode-1)
+You can also [read this in english](#miniscript-1)
 
-Web-page: [MiniCode](https://islan42.github.io/minicode/)
+Web-page: [MiniScript](https://web-production-1b84c.up.railway.app/game/)
 
 ## SOBRE O JOGO
 
-Minicode é um minijogo de apertar botão: você deve pressionar o botão especificado o mais rápido possível (e repetidas vezes) para completar uma barrinha e subir de nível e, no processo, marcar pontos.
+MiniScript é um minijogo de apertar botão: você deve pressionar o botão especificado o mais rápido possível (e repetidas vezes) para completar uma barrinha e subir de nível e, no processo, marcar pontos.
 
 Durante a criação do meu próprio web-portfólio, percebi que ele estava meio vazio já que eu não tinha construído nada muito relevante. Então pensei em construir um minigame, um projeto que não fosse muito complexo mas que pudesse quebrar o gelo e passar o tempo. Eu quase instantaneamente lembrei de um minigame que eu jogava quando criança: Em GTA SA é possível entrar numa academia e começar um minigame para levantar halteres, você pressiona um determinado botão repetidas vezes até completar uma barrinha e completar uma repetição.
 
@@ -24,7 +24,7 @@ Além disso, quando você pressiona o botão especificado um certo número de ve
 
 Outra coisa importante é manter o ritmo. Quanto maior a frequência de clicks mantida maior o *Boost* na pontuação.
 
-![Coding, Lvl, Pontuação, Boost](assets/rdm_01.png)
+![Coding, Lvl, Pontuação, Boost](staticfiles/game/assets/rdm_01.png)
 
 ### IT'S BUGS TIME
 
@@ -32,7 +32,7 @@ Após um bom tempo pressionando o mesmo botão você provavelmente está entedia
 
 A primeira coisa a se notar é que você deve pressionar um novo botão (escolhido aleatoriamente). Também há dicas visuais para mostrar que você entrou na ***HORA DOS BUGS***, o *Boost* é dobrado e os *Penalties* são definidos para 1. A boa notícia é que se você conseguir subir de nível, *Penalties* são redefinidos para 0, e você terá alcançado muitos pontos.
 
-![É HORA DOS BUGS](assets/rdm_02.png)
+![É HORA DOS BUGS](staticfiles/game/assets/rdm_02.png)
 
 ### OUTROS
 
@@ -40,15 +40,15 @@ A primeira coisa a se notar é que você deve pressionar um novo botão (escolhi
 - Após *subir de nível*, por alguns milésimos de segundo, ou *ao receber uma marcação de penalidade*, por alguns segundos, você fica impedido de receber uma marcação de penalidade.
 - Não tente permanecer com o botão pressionado. ***NÃO VAI FUNCIONAR!***
 
-# MiniCode
+# MiniScript
 
-Você pode [ler isto em pt-br](#minicode)
+Você pode [ler isto em pt-br](#MiniScript)
 
-Web-page: [MiniCode](https://islan42.github.io/minicode/)
+Web-page: [MiniScript](https://web-production-1b84c.up.railway.app/game/)
 
 ## ABOUT
 
-Minicode is a pressbutton minigame: You must press the specified button the faster you can (repeatedly) until complete a bar and level up and, score some code points.
+MiniScript is a pressbutton minigame: You must press the specified button the faster you can (repeatedly) until complete a bar and level up and, score some code points.
 
 When I was building my own web-portfolio, I noticed it lacked of content, I hasn't build nothing really interesting. So I thought about building a minigame for it, something that wouldn't be so complex, but would also be fun. Almost instantly, I remembered a GTA SA minigame I played a lot as a kid: when at the gym you could enter a minigame to lift dumbbells, you had to press a certain button repeatedly to complete a rep.
 
@@ -66,7 +66,7 @@ When you press the right key a certain number of times You increase your *Score*
 
 Maintain rhythm is important, You gain a *Boost* on your Score based on the frequency of your right presses.
 
-![Coding, Lvl, Score, Boost](assets/rdm_01.png)
+![Coding, Lvl, Score, Boost](staticfiles/game/assets/rdm_01.png)
 
 ### IT'S BUGS TIME
 
@@ -74,7 +74,7 @@ After pressing SPACEBAR for so long You'r probably bored. But after a random amo
 
 The first thing to note is, there is a new key to press (chosed randomly). You also have visual hints to show You've entered the ***BUGS TIME***. Your *Boost* is now doubled, and *Penalties* were set to 1. The good news: when you *level up*, *Penalties* will drop to zero, and You will have a much higher Score.
 
-![IT'S BUGS TIME](assets/rdm_02.png)
+![IT'S BUGS TIME](staticfiles/game/assets/rdm_02.png)
 
 ### MISC
 
