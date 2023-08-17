@@ -6,7 +6,7 @@
   - [X] Fazer o BugsTime mais aleatório
   - [X] Portabilidade para celulares
   - []  Alterar o carregamento de assets para usar import ou require
-  - []  Reorganizar os assets para separar os game assets
+  - [X]  Reorganizar os assets para separar os game assets
   - [X]  Testar getRequestReadScores() com diferentes platforms
   - [X]  TESTAR submitScore()
   - [X]  miniscript.js -> Apos gameover chamar setLocalStorage(), isso vai resolver o problema do mobile de nao atualizar os pontos também

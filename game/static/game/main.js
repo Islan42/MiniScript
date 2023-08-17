@@ -19,6 +19,8 @@ button.addEventListener("click", () => {
 })
 
 ScoreBoard.init(scoreBoardPanel)
+  .then(()=> document.getElementById('debug').innerText = 'csrftoken: ' + ScoreBoard.csrftoken)
+
 
 // ScoreBoard.rerender(scoreBoardPanel)
 // ScoreBoard.getScoresArray('desktop')

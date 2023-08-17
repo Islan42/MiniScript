@@ -78,17 +78,17 @@ export default class MiniScript {
     
     const aux = this.random(1,2)
     const lorem = new Image();
-    lorem.src = "/static/game/assets/lorem.png"
+    lorem.src = "/static/game/assets/img/lorem.png"
     const desk = new Image();
-    desk.src = `/static/game/assets/desk${aux}.png`
+    desk.src = `/static/game/assets/img/desk${aux}.png`
     const key = new Image();
-    key.src = "/static/game/assets/key.png"
+    key.src = "/static/game/assets/img/key.png"
     const spacebar = new Image();
-    spacebar.src = "/static/game/assets/spacebar.png"
+    spacebar.src = "/static/game/assets/img/spacebar.png"
     const penalties = new Image();
-    penalties.src = "/static/game/assets/penalties.png"
+    penalties.src = "/static/game/assets/img/penalties.png"
     const bugs = new Image()
-    bugs.src = "/static/game/assets/bugs.png"
+    bugs.src = "/static/game/assets/img/bugs.png"
     this.assets = { lorem, desk, key, spacebar, penalties, bugs };
     
     // console.log(ScoreBoard.highScoreMobile)  //DEBUG
