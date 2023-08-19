@@ -880,13 +880,13 @@ const bugsTimeControl = {
         nextNextLvl = 1800;
         break;
       default:
-        newFatigue = 10;
-        newDecInter = 300;
+        newFatigue = 12;
+        newDecInter = 200;
         nextNextLvl = 2000;
     }
     const newBugs = 50 + (10 * lvl)
     // const newTimer = 30 - (2 * lvl) > 20 ? 30 - (2 * lvl) : 20
-    const newTimer = 20 + (5 * lvl) < 40 ? 20 + (5 * lvl) : 40
+    const newTimer = 15 + (5 * lvl) < 35 ? 15 + (5 * lvl) : 35
     console.log(newBugs, newTimer)  //DEBUG
     gameControl.setDecreaseInterval(newDecInter);
     gameControl.fatiguepower = newFatigue;
