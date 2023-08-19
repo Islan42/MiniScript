@@ -22,11 +22,16 @@ def top_mobile(request):
     return JsonResponse(topScores, safe=False)
     
 def top_general(request):
+    query_set = Record.objects.order_by('-score')[:5]
+    
+    topScores = generateTopScores(query_set)
+    return JsonResponse(topScores, safe=False)
+    
+def top_all(request):
     query_set = Record.objects.order_by('-score')
     
     topScores = generateTopScores(query_set)
     return JsonResponse(topScores, safe=False)
-
 
 from django.views.decorators.csrf import csrf_exempt
 

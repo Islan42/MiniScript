@@ -7,8 +7,8 @@ export default {
   csrftoken: '',
   
   async init(div){
-    window.localStorage.removeItem('ms_hs_mobile')  //DEBUG
-    window.localStorage.removeItem('ms_hs_desktop') //DEBUG
+    // window.localStorage.removeItem('ms_hs_mobile')  //DEBUG
+    // window.localStorage.removeItem('ms_hs_desktop') //DEBUG
     this.setDiv(div)
     this.getLocalStorage('ML')
     this.getLocalStorage('DT')

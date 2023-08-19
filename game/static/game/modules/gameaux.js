@@ -604,6 +604,8 @@ const gameMain = {
   },
   
   gameOver() {
+    this.gameOn = false;
+    
     if (this.desktop) {
       document.removeEventListener("keydown", inputGame.keyHandlerBind);
     } else {
@@ -614,7 +616,6 @@ const gameMain = {
     for (let timeout of gameControl.boostTimeouts){
       clearTimeout(timeout)
     }
-    this.gameOn = false;
 
     animate.canvas.addEventListener("click", this.callGameStartBind)
     document.addEventListener("keydown", this.callGameStartBind)
