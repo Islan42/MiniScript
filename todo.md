@@ -10,8 +10,9 @@
   - [X]  Testar getRequestReadScores() com diferentes platforms
   - [X]  TESTAR submitScore()
   - [X]  miniscript.js -> Apos gameover chamar setLocalStorage(), isso vai resolver o problema do mobile de nao atualizar os pontos também
-  - []  Refatorar utils.js para aux.js de maneira mais coerente
+  - [X]  Refatorar utils.js para aux.js de maneira mais coerente
   - []  Refatorar a Animação
+  - []  Consertar o FrameRate, atualmente passa um frame a mais
 
   ## MELHORIAS
 

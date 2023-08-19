@@ -42,7 +42,7 @@ A primeira coisa a se notar é que você deve pressionar um novo botão (escolhi
 
 # MiniScript
 
-Você pode [ler isto em pt-br](#MiniScript)
+Você pode [ler isto em pt-br](#miniscript)
 
 Web-page: [MiniScript](https://web-production-1b84c.up.railway.app/game/)
 
